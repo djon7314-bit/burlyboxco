@@ -89,6 +89,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;border-bottom
 .countdown{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:rgba(0,0,0,.45);padding:0;align-self:stretch}
 .countdown div{background:rgba(18,8,2,.42);padding:22px;display:flex;flex-direction:column;justify-content:center}
 .countdown b{font-family:var(--woodtype);font-weight:400;font-size:38px;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+.countdown b.w{font-size:clamp(20px,2.4vw,28px)}
 .countdown small{color:var(--wood-dim);font-size:13px}
 .side.stats{padding:0;background:none}
 /* featured crate */
@@ -134,10 +135,16 @@ h2.sec{font-family:var(--display);font-weight:700;font-size:27px;letter-spacing:
 .fine{font-size:12px;color:var(--muted)}
 .shop{margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;background:var(--pine);color:var(--pine-ink);font-weight:700;font-size:14px;padding:10px;border-radius:4px;box-shadow:0 2px 0 rgba(0,0,0,.35)}
 .shop:hover{filter:brightness(1.1)}
+.browse-wrap{display:flex;justify-content:center;margin-top:24px}
+.cta.browse{background:var(--pine);color:var(--pine-ink);font-size:15px}
+.who-sec{margin-top:44px}
+/* photo inside a wood frame */
+.thumb.has-img img{inset:12px;width:calc(100% - 24px);height:calc(100% - 24px);object-fit:contain;background:#fff;border-radius:2px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.crate-big.has-img img{inset:14px;width:calc(100% - 28px);height:calc(100% - 28px);object-fit:contain;background:#fff;border-radius:2px}
 .empty{grid-column:1/-1;text-align:center;padding:48px 0;color:var(--muted)}
 
 /* ===== Build a Box ===== */
-#build{scroll-margin-top:140px;margin-top:56px;display:flex;flex-direction:column;gap:24px}
+#build{scroll-margin-top:140px;margin-top:40px;margin-bottom:56px;display:flex;flex-direction:column;gap:24px}
 .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pine)}
 .big{font-family:var(--woodtype);font-weight:400;font-size:clamp(30px,4.4vw,46px);line-height:1.05;margin:4px 0 0;text-wrap:balance}
 .build-intro{display:grid;grid-template-columns:1.15fr 1fr;gap:22px;align-items:start}
@@ -270,7 +277,7 @@ footer .logo{font-size:22px}
           <span class="eyebrow">The Gift Guide</span>
           <h2>Gifts he'll actually use.</h2>
           <p>Hand-picked gear, kitchen staples and good stuff for every man on your list. Every pick is something we'd buy ourselves.</p>
-          <div class="ctas"><a class="cta" href="#shop">Shop all gifts</a></div>
+          <div class="ctas"><a class="cta" href="#shop" id="heroShop">Shop the gift guide</a></div>
         </div>
         <div class="side stats"><div class="countdown" id="countdown"></div></div>
       </article>
@@ -293,23 +300,6 @@ footer .logo{font-size:22px}
       <button type="button" id="next" aria-label="Next slide">›</button>
       <button type="button" id="pause" aria-label="Pause slideshow">❚❚</button>
     </div>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2 class="sec">Shop by who he is</h2></div>
-    <div class="who" id="who"></div>
-  </section>
-
-  <section id="shop" style="scroll-margin-top:140px">
-    <div class="sec-head"><h2 class="sec" id="gridTitle">All gifts</h2><span class="count" id="count"></span></div>
-    <div class="toolbar" id="prices">
-      <select id="sort" aria-label="Sort">
-        <option value="pick">Sort: Our picks</option>
-        <option value="low">Price: low to high</option>
-        <option value="high">Price: high to low</option>
-      </select>
-    </div>
-    <div class="grid" id="grid"></div>
   </section>
 
   <!-- ===== Build a Box ===== -->
@@ -374,6 +364,25 @@ footer .logo{font-size:22px}
     </form>
   </section>
 
+  <section id="shop" style="scroll-margin-top:140px">
+    <div class="sec-head"><h2 class="sec" id="gridTitle">All gifts</h2><span class="count" id="count"></span></div>
+    <p class="count" id="picksNote" style="margin:-6px 0 14px">A few favorites. Use the tabs above to see everything.</p>
+    <div class="toolbar" id="prices">
+      <select id="sort" aria-label="Sort">
+        <option value="pick">Sort: Our picks</option>
+        <option value="low">Price: low to high</option>
+        <option value="high">Price: high to low</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="browse-wrap" id="browseWrap"><button type="button" class="cta browse" id="browseAll">Browse the full gift guide</button></div>
+  </section>
+
+  <section class="who-sec">
+    <div class="sec-head"><h2 class="sec">Shop by who he is</h2></div>
+    <div class="who" id="who"></div>
+  </section>
+
   <section class="trust">
     <div><b>Hand-picked</b><span>Every product is chosen by a person, not an algorithm.</span></div>
     <div><b>Checkout you trust</b><span>Gift guide items are bought directly from Amazon or the brand's own store.</span></div>
@@ -412,7 +421,7 @@ const BOXES=[
 ];
 const PAY_ON=BOXES.some(b=>b.checkout);
 
-let state={cat:"All",who:null,tier:null,q:"",sort:"pick",savedOnly:false,saved:new Set()};
+let state={browsing:false,cat:"All",who:null,tier:null,q:"",sort:"pick",savedOnly:false,saved:new Set()};
 try{state.saved=new Set(JSON.parse(localStorage.getItem("bbc-saved")||"[]"))}catch(e){}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -428,6 +437,14 @@ function badgeClass(b){return /founder/i.test(b)?"badge founder":SALE.test(b)?"b
 
 function render(){
   let list=PRODUCTS.map((p,i)=>({...p,i}));
+  const picks=!state.browsing;
+  $("prices").hidden=picks;$("picksNote").hidden=!picks;$("browseWrap").hidden=!picks;
+  if(picks){
+    const order=(typeof HOME_PICKS!=="undefined"?HOME_PICKS:[]);
+    let chosen=order.map(n=>list.find(p=>p.name===n)).filter(Boolean);
+    for(const p of list){if(chosen.length>=8)break;if(!chosen.includes(p))chosen.push(p)}
+    list=chosen.slice(0,8);
+  }
   if(state.cat!=="All")list=list.filter(p=>p.cat===state.cat);
   if(state.who)list=list.filter(p=>p.who.includes(state.who));
   if(state.tier)list=list.filter(p=>p.tier===state.tier);
@@ -436,11 +453,11 @@ function render(){
   if(state.sort==="low")list.sort((a,b)=>a.tier-b.tier);
   if(state.sort==="high")list.sort((a,b)=>b.tier-a.tier);
   const whoLbl=state.who?WHO_ALL.find(w=>w[0]===state.who)[1]:null;
-  $("gridTitle").textContent=state.savedOnly?"Your saved gifts":[whoLbl,state.cat!=="All"?state.cat:null].filter(Boolean).join(" · ")||"All gifts";
-  $("count").textContent=list.length+(list.length===1?" gift":" gifts");
+  $("gridTitle").textContent=picks?"Gift picks":state.savedOnly?"Your saved gifts":[whoLbl,state.cat!=="All"?state.cat:null].filter(Boolean).join(" · ")||"All gifts";
+  $("count").textContent=picks?"":list.length+(list.length===1?" gift":" gifts");
   $("grid").innerHTML=list.length?list.map(p=>`
     <article class="card">
-      <div class="thumb" style="background-position:${(p.i*37)%100}% ${(p.i*61)%100}%">${tile(p,p.i)}
+      <div class="thumb${p.img?" has-img":""}" style="background-position:${(p.i*37)%100}% ${(p.i*61)%100}%">${tile(p,p.i)}
         ${p.badge?`<span class="${badgeClass(p.badge)}">${esc(p.badge)}</span>`:""}
         <button class="heart" data-save="${esc(p.name)}" aria-pressed="${state.saved.has(p.name)}" aria-label="Save ${esc(p.name)}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
@@ -466,29 +483,33 @@ $("prices").insertAdjacentHTML("afterbegin",Object.entries(TIERS).map(([k,v])=>`
 
 document.addEventListener("click",e=>{
   const c=e.target.closest("[data-cat]"),w=e.target.closest("[data-who]"),t=e.target.closest("[data-tier]"),h=e.target.closest("[data-save]");
-  if(c){state.cat=c.dataset.cat;state.savedOnly=false;document.querySelectorAll("[data-cat]").forEach(b=>b.setAttribute("aria-pressed",b===c));$("shop").scrollIntoView()}
+  if(c||w||t||e.target.closest("#savedBtn")||e.target.closest("#browseAll"))state.browsing=true;
+  if(e.target.closest("#browseAll")){$("shop").scrollIntoView()}
+  else if(c){state.cat=c.dataset.cat;state.savedOnly=false;document.querySelectorAll("[data-cat]").forEach(b=>b.setAttribute("aria-pressed",b===c));$("shop").scrollIntoView()}
   else if(w){state.who=state.who===w.dataset.who?null:w.dataset.who;state.savedOnly=false;document.querySelectorAll("[data-who]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.who===state.who));$("shop").scrollIntoView()}
   else if(t){const v=+t.dataset.tier;state.tier=state.tier===v?null:v;document.querySelectorAll("[data-tier]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.tier===state.tier))}
   else if(h){const n=h.dataset.save;state.saved.has(n)?state.saved.delete(n):state.saved.add(n);try{localStorage.setItem("bbc-saved",JSON.stringify([...state.saved]))}catch(e){}}
   else if(e.target.closest("#savedBtn")){state.savedOnly=!state.savedOnly;$("shop").scrollIntoView()}
-  else return;
+  else if(!e.target.closest("#browseAll"))return;
   render();
 });
-$("q").addEventListener("input",e=>{state.q=e.target.value.trim();render()});
+$("q").addEventListener("input",e=>{state.q=e.target.value.trim();if(state.q)state.browsing=true;render()});
 $("sort").addEventListener("change",e=>{state.sort=e.target.value;render()});
 
+$("heroShop").addEventListener("click",()=>{state.browsing=true;render()});
 /* ===== Hero slides ===== */
 (function(){
   const now=new Date(),xmas=new Date(now.getFullYear(),11,25);
   if(now>xmas)xmas.setFullYear(now.getFullYear()+1);
   const days=Math.max(0,Math.ceil((xmas-now)/864e5));
-  $("countdown").innerHTML=`<div><b>${days}</b><small>days until Christmas</small></div><div><b>${PRODUCTS.length}</b><small>hand-picked gifts</small></div><div><b>${PRODUCTS.filter(p=>p.tier===1).length}</b><small>gifts under $50</small></div><div><b>${CATS.length-1}</b><small>categories to browse</small></div>`;
+  $("countdown").innerHTML=`<div><b>${days}</b><small>days until Christmas</small></div><div><b class="w">Hand-picked</b><small>Every gift chosen by a person</small></div><div><b class="w">Under $50</b><small>Stocking stuffers he'll keep</small></div><div><b class="w">Buy direct</b><small>From Amazon or the brand itself</small></div>`;
   const i=Math.max(0,PRODUCTS.findIndex(p=>p.name===FEATURED)),f=PRODUCTS[i];
   $("fEyebrow").textContent=f.badge&&SALE.test(f.badge)?"On sale now":"Trending now";
   $("fName").textContent=f.name.toLowerCase().startsWith(f.brand.toLowerCase())?f.name:`${f.brand} ${f.name}`;
   $("fWhy").textContent=f.why;
   $("fPrice").textContent=TIERS[f.tier];
   $("fLink").href=f.url;$("fLink").innerHTML=`${esc(shopLabel(f))} ${arrow}`;
+  $("fTile").classList.toggle("has-img",!!f.img);
   $("fTile").innerHTML=f.img?`<img src="${esc(f.img)}" alt="${esc(f.name)}">`:`<span class="mono">${esc(initials(f.brand,f.name))}</span>`;
   $("fTile").style.backgroundPosition=`${(i*37)%100}% ${(i*61)%100}%`;
 
