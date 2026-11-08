@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Burly Box Co.</title>
+<meta name="description" content="Hand-picked gifts for men, and custom gift boxes built by hand for the man you're shopping for.">
+<meta property="og:title" content="Burly Box Co.">
+<meta property="og:description" content="Gifts he'll actually use, and boxes built for one man at a time.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='18' width='52' height='38' rx='3' fill='%234E2E19'/%3E%3Crect x='4' y='12' width='56' height='12' rx='3' fill='%23D0913F'/%3E%3Crect x='28' y='12' width='8' height='44' fill='%23F6E9D4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Zilla+Slab:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: rustic general-store storefront. Barn-wood header, rotating hero and footer; kraft-paper floor; weathered-wood product crates. */
+:root{
+  --bg:#E8DCC6; --surface:#F5EDDD; --ink:#2A1A0F; --muted:#6E5843; --line:#D4C2A4;
+  --pine:#4E2E19; --pine-ink:#F6E9D4; --tag:#D0913F; --tag-ink:#21130A; --sale:#A3402C;
+  --wood:#4A2C18; --wood-2:#2B190D; --wood-ink:#F6E9D4; --wood-dim:rgba(246,233,212,.74);
+  --wood-tex:url(wood.jpg);
+  --log-a:#C99A62; --log-b:#B58450; --bark:#4A2C18; --burn:rgba(38,18,6,.78);
+  --woodtype:"Alfa Slab One", Rockwell, "Roboto Slab", Georgia, serif;
+  --display:"Zilla Slab", Rockwell, Georgia, serif;
+  --body:"Figtree", "Helvetica Neue", Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17100A; --surface:#211710; --ink:#F0E3CE; --muted:#B39D84; --line:#3A2A1C;
+  --pine:#C58C52; --pine-ink:#1A0F07; --tag:#D9A35A; --tag-ink:#1E1209; --sale:#EE8A72;
+  --wood:#3F2514; --wood-2:#21130A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17100A; --surface:#211710; --ink:#F0E3CE; --muted:#B39D84; --line:#3A2A1C;
+  --pine:#C58C52; --pine-ink:#1A0F07; --tag:#D9A35A; --tag-ink:#1E1209; --sale:#EE8A72;
+  --wood:#3F2514; --wood-2:#21130A; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--wood-2)}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--tag);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* barn wood surfaces */
+.planks{background-color:var(--wood);background-image:linear-gradient(rgba(18,8,2,.4),rgba(18,8,2,.4)),var(--wood-tex);background-size:auto,460px auto;color:var(--wood-ink)}
+
+.promo{background:var(--tag);color:var(--tag-ink);font-size:13px;font-weight:600;text-align:center}
+.promo .wrap{padding-block:7px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;border-bottom:3px solid rgba(0,0,0,.45);box-shadow:0 4px 12px rgba(30,15,5,.25)}
+.head{display:flex;align-items:center;gap:16px;padding-block:14px}
+.logo{font-family:var(--woodtype);font-weight:400;font-size:26px;letter-spacing:.01em;text-decoration:none;white-space:nowrap;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+.logo span{color:var(--tag)}
+.search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--muted);border:1px solid rgba(0,0,0,.35);border-radius:4px;padding:9px 14px;box-shadow:inset 0 2px 3px rgba(0,0,0,.15)}
+.search input{border:0;background:transparent;color:var(--ink);font:inherit;width:100%;outline:none}
+.saved{white-space:nowrap;font-weight:600;font-size:14px;border:1px solid rgba(246,233,212,.35);background:rgba(0,0,0,.25);color:var(--wood-ink);border-radius:4px;padding:8px 14px}
+.saved[aria-pressed="true"]{background:var(--tag);color:var(--tag-ink);border-color:var(--tag)}
+.cats{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:10px}
+.cats button{border:0;background:none;color:var(--wood-dim);font-weight:600;font-size:14px;padding:6px 12px;border-radius:3px;white-space:nowrap}
+.cats button:hover{color:var(--wood-ink)}
+.cats button[aria-pressed="true"]{background:var(--tag);color:var(--tag-ink)}
+.cats .cat-link{margin-left:auto;text-decoration:none;color:var(--tag);font-weight:700;font-size:14px;padding:6px 12px;border:1px solid var(--tag);border-radius:3px;white-space:nowrap}
+.cats .cat-link:hover{background:var(--tag);color:var(--tag-ink)}
+
+/* ===== Rotating hero ===== */
+.hero{margin-block:24px;display:flex;flex-direction:column;gap:10px}
+.slides{display:grid}
+.slide{grid-area:1/1;display:grid;grid-template-columns:1.3fr 1fr;border-radius:6px;overflow:hidden;box-shadow:0 6px 18px rgba(30,15,5,.3);color:var(--wood-ink);background-color:var(--wood);background-image:linear-gradient(90deg,rgba(18,8,2,.66),rgba(18,8,2,.22)),var(--wood-tex);background-size:auto,460px auto;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility 0s linear .7s}
+.slide.is-active{opacity:1;visibility:visible;transition:opacity .7s ease}
+.slide .copy{padding:40px 36px;display:flex;flex-direction:column;gap:14px;justify-content:center;min-width:0}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tag)}
+.slide h1,.slide h2{font-family:var(--woodtype);font-weight:400;font-size:clamp(30px,4.8vw,54px);line-height:1.04;letter-spacing:.005em;margin:0;text-wrap:balance;text-shadow:0 3px 0 rgba(0,0,0,.45)}
+.slide p{margin:0;max-width:46ch;color:var(--wood-dim)}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.cta{display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:var(--tag);color:var(--tag-ink);border:0;font-weight:700;padding:12px 22px;border-radius:4px;box-shadow:0 3px 0 rgba(0,0,0,.45)}
+.cta:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.45)}
+.cta.ghost{background:transparent;color:var(--wood-ink);box-shadow:inset 0 0 0 2px var(--wood-dim)}
+.side{display:flex;align-items:center;justify-content:center;padding:28px;min-width:0;background:rgba(0,0,0,.28)}
+/* packing slip */
+.slip{background:var(--surface);color:var(--ink);width:100%;max-width:320px;padding:20px 22px;border-radius:2px;transform:rotate(2deg);box-shadow:0 8px 18px rgba(0,0,0,.4);font-size:14px;background-image:repeating-linear-gradient(180deg,transparent 0 27px,var(--line) 27px 28px)}
+.slip b.t{display:block;font-family:var(--woodtype);font-weight:400;font-size:18px;letter-spacing:.06em;margin-bottom:8px;border-bottom:2px dashed var(--muted);padding-bottom:6px}
+.slip dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;line-height:24px}
+.slip dt{font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.08em;color:var(--muted);padding-top:2px}
+.slip dd{margin:0;font-family:var(--display);font-weight:600}
+/* stats */
+.countdown{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:rgba(0,0,0,.45);padding:0;align-self:stretch}
+.countdown div{background:rgba(18,8,2,.42);padding:22px;display:flex;flex-direction:column;justify-content:center}
+.countdown b{font-family:var(--woodtype);font-weight:400;font-size:38px;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+.countdown small{color:var(--wood-dim);font-size:13px}
+.side.stats{padding:0;background:none}
+/* featured crate */
+.crate-big{position:relative;width:100%;max-width:300px;aspect-ratio:1/1;border-radius:4px;overflow:hidden;display:grid;place-items:center;background-color:#8a5a32;background-image:var(--wood-tex);background-size:460px auto;box-shadow:0 8px 18px rgba(0,0,0,.45),inset 0 0 0 1px rgba(0,0,0,.3)}
+.crate-big img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.crate-big .mono{font-family:var(--woodtype);font-size:72px;color:rgba(246,233,212,.92);text-shadow:0 2px 0 rgba(0,0,0,.65),0 0 16px rgba(0,0,0,.45)}
+.hero-nav{display:flex;align-items:center;justify-content:center;gap:10px}
+.hero-nav button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;width:34px;height:34px;display:grid;place-items:center}
+.dots{display:flex;gap:8px}
+.dots button{width:30px;height:8px;border-radius:4px;border:0;background:var(--line);padding:0}
+.dots button[aria-current="true"]{background:var(--pine)}
+
+h2.sec{font-family:var(--display);font-weight:700;font-size:27px;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.who{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:36px}
+.who button{background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:600}
+.who button[aria-pressed="true"]{border-color:var(--pine);box-shadow:inset 0 0 0 1px var(--pine)}
+.ring{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-family:var(--woodtype);font-size:20px;color:var(--burn);background:repeating-radial-gradient(circle at 46% 54%,var(--log-a) 0 3px,var(--log-b) 3px 5px);border:4px solid var(--bark);box-shadow:0 2px 4px rgba(0,0,0,.3),inset 0 0 8px rgba(60,30,10,.4)}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;padding:7px 14px;font-size:14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--pine);color:var(--pine-ink);border-color:var(--pine)}
+.toolbar select{margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;padding:7px 10px;font:inherit;font-size:14px}
+.count{color:var(--muted);font-size:14px}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 16px}
+.card{display:flex;flex-direction:column;min-width:0}
+.thumb{position:relative;aspect-ratio:1/1;max-width:100%;border-radius:4px;overflow:hidden;display:grid;place-items:center;background-color:#8a5a32;background-image:var(--wood-tex);background-size:460px auto;box-shadow:0 3px 8px rgba(30,15,5,.25),inset 0 0 0 1px rgba(0,0,0,.25)}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff}
+.thumb .tint{position:absolute;inset:0;mix-blend-mode:soft-light}
+.thumb .mono{position:relative;font-family:var(--woodtype);font-size:58px;color:rgba(246,233,212,.92);text-shadow:0 2px 0 rgba(0,0,0,.65),0 0 16px rgba(0,0,0,.45)}
+.badge{position:absolute;top:12px;left:10px;background:var(--surface);color:var(--ink);border:1px dashed var(--muted);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:2px;transform:rotate(-3deg);box-shadow:0 2px 3px rgba(0,0,0,.25)}
+.badge.sale{background:var(--sale);color:#fff;border-color:transparent}
+.badge.founder{background:var(--tag);color:var(--tag-ink);border-color:transparent}
+.heart{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(245,237,221,.94);color:#2A1A0F;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.heart[aria-pressed="true"] svg{fill:#A3402C;stroke:#A3402C}
+.info{padding-top:10px;display:flex;flex-direction:column;gap:3px;flex:1}
+.brand{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.name{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.25}
+.why{font-size:13px;color:var(--muted)}
+.quote{font-size:13px;font-style:italic;color:var(--ink);border-left:3px solid var(--tag);padding-left:8px;margin-top:4px}
+.price{font-weight:700;margin-top:auto;padding-top:6px}
+.fine{font-size:12px;color:var(--muted)}
+.shop{margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;background:var(--pine);color:var(--pine-ink);font-weight:700;font-size:14px;padding:10px;border-radius:4px;box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.shop:hover{filter:brightness(1.1)}
+.empty{grid-column:1/-1;text-align:center;padding:48px 0;color:var(--muted)}
+
+/* ===== Build a Box ===== */
+#build{scroll-margin-top:140px;margin-top:56px;display:flex;flex-direction:column;gap:24px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pine)}
+.big{font-family:var(--woodtype);font-weight:400;font-size:clamp(30px,4.4vw,46px);line-height:1.05;margin:4px 0 0;text-wrap:balance}
+.build-intro{display:grid;grid-template-columns:1.15fr 1fr;gap:22px;align-items:start}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:28px 30px;box-shadow:0 4px 12px rgba(30,15,5,.12);transform:rotate(-.6deg);min-width:0;background-image:repeating-linear-gradient(180deg,transparent 0 29px,var(--line) 29px 30px);background-position:0 18px}
+.note h3{font-family:var(--display);font-size:21px;margin:0 0 10px}
+.note p{margin:0 0 12px;max-width:60ch;line-height:30px}
+.note .sig{font-family:var(--display);font-weight:600;font-style:italic;color:var(--pine);margin:6px 0 0}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;min-width:0}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:16px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+.steps .ring{width:44px;height:44px;font-size:18px;border-width:3px}
+.steps b{display:block;font-family:var(--display);font-size:17px}
+.steps span.d{color:var(--muted);font-size:14px}
+.subhead{display:flex;flex-direction:column;gap:4px}
+.subhead h3{font-family:var(--display);font-size:23px;margin:0}
+.subhead p{margin:0;color:var(--muted);font-size:14px;max-width:70ch}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tier{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden;min-width:0}
+.tier.pop{border-color:var(--pine);box-shadow:0 0 0 1px var(--pine),0 6px 16px rgba(30,15,5,.18)}
+.crate{position:relative;height:120px;display:grid;place-items:center;background-color:#8a5a32;background-image:var(--wood-tex);background-size:460px auto;border-bottom:3px solid rgba(0,0,0,.35)}
+.crate b{font-family:var(--woodtype);font-weight:400;font-size:26px;color:rgba(246,233,212,.94);text-shadow:0 2px 0 rgba(0,0,0,.65),0 0 16px rgba(0,0,0,.45);text-align:center;line-height:1.05;padding-inline:12px}
+.crate .tagline{position:absolute;top:10px;right:10px;background:var(--tag);color:var(--tag-ink);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:2px;transform:rotate(3deg)}
+.tier-body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.tier .from{font-size:13px;color:var(--muted)}
+.tier .from strong{font-family:var(--display);font-size:26px;color:var(--ink);font-variant-numeric:tabular-nums}
+.tier .soon{font-size:13px;color:var(--muted);font-style:italic}
+.tier p.blurb{margin:0;font-size:14px}
+.tier ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px;flex:1}
+.tier button{margin-top:auto;border:0;background:var(--pine);color:var(--pine-ink);font-weight:700;padding:10px;border-radius:4px;box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.disclaimer{display:flex;gap:12px;align-items:flex-start;border:2px dashed var(--line);border-radius:4px;padding:14px 16px;font-size:14px;color:var(--muted)}
+.disclaimer b{color:var(--ink)}
+.order{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:26px;display:flex;flex-direction:column;gap:18px;scroll-margin-top:140px}
+.order h3{font-family:var(--display);font-size:23px;margin:0}
+.order .sub{margin:-12px 0 0;color:var(--muted);font-size:14px}
+.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 16px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{font-weight:600;font-size:14px}
+.field small{color:var(--muted);font-size:12.5px;margin-top:-3px}
+.field input,.field select,.field textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px;width:100%}
+.field textarea{min-height:84px;resize:vertical}
+.fieldset-label{grid-column:1/-1;font-family:var(--display);font-weight:700;font-size:16px;border-top:2px dashed var(--line);margin-top:4px;padding-top:14px}
+.submit{align-self:flex-start;border:0;background:var(--tag);color:var(--tag-ink);font-weight:700;padding:13px 26px;border-radius:4px;box-shadow:0 3px 0 rgba(0,0,0,.4)}
+.submit[disabled]{opacity:.6;cursor:wait}
+.done{border:1px solid var(--pine);border-radius:4px;padding:14px 16px;background:var(--bg)}
+.done.err{border-color:var(--sale)}
+.done b{font-family:var(--display)}
+
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-block:44px;border-block:2px dashed var(--line);padding-block:24px}
+.trust b{display:block;font-family:var(--display);font-size:18px}
+.trust span{color:var(--muted);font-size:14px}
+footer{border-top:3px solid rgba(0,0,0,.45);font-size:13px}
+footer .wrap{padding-block:30px;display:flex;flex-direction:column;gap:10px}
+footer p{margin:0;color:var(--wood-dim);max-width:80ch}
+footer .logo{font-size:22px}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:repeat(3,1fr)}.who{grid-template-columns:repeat(3,1fr)}
+  .build-intro{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .slide{grid-template-columns:1fr}.slide .copy{padding:28px 22px}
+  .side{padding:20px}.side.stats{padding:0}.crate-big{max-width:200px}.crate-big .mono{font-size:54px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:18px 12px}
+  .thumb .mono{font-size:42px}
+  .trust{grid-template-columns:1fr}
+  .saved .lbl{display:none}
+  .head{gap:10px}.logo{font-size:20px}
+  .toolbar select{margin-left:0}
+  .fields{grid-template-columns:1fr}.note{padding:22px 20px;transform:none}.order{padding:20px}
+  .cats .cat-link{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){.slide,.slide.is-active{transition:none}html{scroll-behavior:auto}}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s}.card:hover{transform:translateY(-2px)}}
+</style>
+</head>
+<body>
+
+<div class="promo"><div class="wrap">The Holiday Gift Shop is open. Shop early for Christmas delivery.</div></div>
+
+<header class="planks">
+  <div class="wrap">
+    <div class="head">
+      <a class="logo" href="#top" id="top">Burly Box<span> Co.</span></a>
+      <label class="search" for="q">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span class="sr-only">Search gifts</span>
+        <input id="q" type="search" placeholder="Search gifts for him">
+      </label>
+      <button class="saved" id="savedBtn" aria-pressed="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-2px"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        <span class="lbl">Saved</span> <span id="savedN">0</span>
+      </button>
+    </div>
+    <nav class="cats" id="cats" aria-label="Categories"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ===== Rotating banner: 3 slides ===== -->
+  <section class="hero" id="hero" aria-roledescription="carousel" aria-label="Featured">
+    <div class="slides">
+      <!-- Slide 1: Burly Box. When you have a photo of a finished box, replace the packing slip with:
+           <img src="box.jpg" alt="A finished Burly Box" style="border-radius:4px;box-shadow:0 8px 18px rgba(0,0,0,.45)"> -->
+      <article class="slide is-active" aria-roledescription="slide" aria-label="1 of 3">
+        <div class="copy">
+          <span class="eyebrow">Made to order, by hand</span>
+          <h1>Every Burly Box is built for one man.</h1>
+          <p>Tell us who he is. We pick every item for him, pack it in a Burly Box and write the card by hand. No two boxes are the same.</p>
+          <div class="ctas">
+            <a class="cta" href="#order">Build his box</a>
+            <a class="cta ghost" href="#boxes">See box sizes</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="slip" aria-hidden="true">
+            <b class="t">PACKING SLIP</b>
+            <dl>
+              <dt>For</dt><dd>Him, specifically</dd>
+              <dt>Picked</dt><dd>One item at a time</dd>
+              <dt>Card</dt><dd>Handwritten</dd>
+              <dt>Wrap</dt><dd>Not needed</dd>
+            </dl>
+          </div>
+        </div>
+      </article>
+
+      <!-- Slide 2: Gift guide -->
+      <article class="slide" aria-roledescription="slide" aria-label="2 of 3">
+        <div class="copy">
+          <span class="eyebrow">The Gift Guide</span>
+          <h2>Gifts he'll actually use.</h2>
+          <p>Hand-picked gear, kitchen staples and good stuff for every man on your list. Every pick is something we'd buy ourselves.</p>
+          <div class="ctas"><a class="cta" href="#shop">Shop all gifts</a></div>
+        </div>
+        <div class="side stats"><div class="countdown" id="countdown"></div></div>
+      </article>
+
+      <!-- Slide 3: Featured product (set FEATURED in products.js) -->
+      <article class="slide" id="featureSlide" aria-roledescription="slide" aria-label="3 of 3">
+        <div class="copy">
+          <span class="eyebrow" id="fEyebrow">Trending now</span>
+          <h2 id="fName"></h2>
+          <p id="fWhy"></p>
+          <p id="fPrice" style="color:var(--wood-ink);font-weight:700"></p>
+          <div class="ctas"><a class="cta" id="fLink" href="#" target="_blank" rel="sponsored noopener"></a></div>
+        </div>
+        <div class="side"><div class="crate-big" id="fTile"></div></div>
+      </article>
+    </div>
+    <div class="hero-nav">
+      <button type="button" id="prev" aria-label="Previous slide">‹</button>
+      <div class="dots" id="dots"></div>
+      <button type="button" id="next" aria-label="Next slide">›</button>
+      <button type="button" id="pause" aria-label="Pause slideshow">❚❚</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2 class="sec">Shop by who he is</h2></div>
+    <div class="who" id="who"></div>
+  </section>
+
+  <section id="shop" style="scroll-margin-top:140px">
+    <div class="sec-head"><h2 class="sec" id="gridTitle">All gifts</h2><span class="count" id="count"></span></div>
+    <div class="toolbar" id="prices">
+      <select id="sort" aria-label="Sort">
+        <option value="pick">Sort: Our picks</option>
+        <option value="low">Price: low to high</option>
+        <option value="high">Price: high to low</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- ===== Build a Box ===== -->
+  <section id="build" aria-labelledby="buildTitle">
+    <div>
+      <span class="kicker">Made to order, by hand</span>
+      <h2 class="big" id="buildTitle">A box built for the man who has everything.</h2>
+    </div>
+
+    <div class="build-intro">
+      <article class="note">
+        <h3>The stocking that got too big</h3>
+        <p>Every Christmas I make a personalized gift for everyone in my life. It started with stocking stuffers. Then the stockings stopped being big enough, and now it's a full box for every person on my list.</p>
+        <p>We all know someone who's hard to shop for. He already has everything, or last year's gift is still sitting in the closet. Spending more doesn't fix that. Paying closer attention does. A gift that's specific to him shows you took the time.</p>
+        <p>That's how every Burly Box is made. One man at a time, built around who he actually is.</p>
+        <p class="sig">Dominick, founder</p>
+      </article>
+      <ol class="steps">
+        <li><span class="ring">1</span><div><b>Tell us about him</b><span class="d">What he does on weekends, what he's into, and what he already owns too much of.</span></div></li>
+        <li><span class="ring">2</span><div><b>We build it by hand</b><span class="d">Every item is picked for him and packed in a Burly Box with a handwritten card.</span></div></li>
+        <li><span class="ring">3</span><div><b>It arrives ready to give</b><span class="d">No wrapping needed. Ship it to your door or straight to his.</span></div></li>
+      </ol>
+    </div>
+
+    <div class="subhead" id="boxes" style="scroll-margin-top:140px">
+      <h3>Pick a box size</h3>
+      <p>Every box is built from scratch around him. Pick a size, tell us who he is, and we'll do the rest.</p>
+    </div>
+    <div class="tiers" id="tiers"></div>
+
+    <div class="disclaimer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
+      <span><b>Every box is one of a kind.</b> Each Burly Box is built by hand for the one person it's for, so no two are ever the same. What goes inside depends on him, so items, brands and packaging vary from box to box.</span>
+    </div>
+
+    <form class="order" id="order" name="box-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="box-request">
+      <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
+      <h3>Start his box</h3>
+      <p class="sub" id="orderSub">Answer a few questions. The more specific you are, the better the box.</p>
+      <div class="fields">
+        <div class="field"><label for="o-box">Which box?</label>
+          <select id="o-box" name="box" required></select></div>
+        <div class="field"><label for="o-date">Needed by</label><input id="o-date" name="needed-by" type="date" required></div>
+
+        <span class="fieldset-label">About him</span>
+        <div class="field"><label for="o-him">His first name</label><input id="o-him" name="his-name" type="text" placeholder="Marcus" required></div>
+        <div class="field"><label for="o-rel">Who is he to you?</label>
+          <select id="o-rel" name="relationship"><option>Dad</option><option>Husband or partner</option><option>Brother</option><option>Son</option><option>Friend</option><option>Coworker or boss</option><option>Other</option></select></div>
+        <div class="field full"><label for="o-sat">What does he do on a Saturday morning?</label><textarea id="o-sat" name="saturday" placeholder="Up early, coffee on the porch, then out to the garage working on his truck."></textarea></div>
+        <div class="field"><label for="o-never">What's something he'd never buy himself?</label><textarea id="o-never" name="never-buys" placeholder="Nice whiskey glasses. He drinks out of a mason jar."></textarea></div>
+        <div class="field"><label for="o-skip">What should stay out of the box?</label><small>Things he already has too much of, or won't use.</small><textarea id="o-skip" name="leave-out" placeholder="No more socks or cologne."></textarea></div>
+        <div class="field full"><label for="o-card">Message for the handwritten card</label><textarea id="o-card" name="card-message" placeholder="Merry Christmas, Dad. Thanks for teaching me how to fix things."></textarea></div>
+
+        <span class="fieldset-label">About you</span>
+        <div class="field"><label for="o-name">Your name</label><input id="o-name" name="your-name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="o-email">Your email</label><input id="o-email" name="email" type="email" autocomplete="email" required></div>
+      </div>
+      <button class="submit" id="submitBtn" type="submit">Send my box request</button>
+      <p class="fine" id="shipNote" style="margin:-8px 0 0">Shipping is added at checkout.</p>
+      <div class="done" id="orderDone" role="status" hidden></div>
+    </form>
+  </section>
+
+  <section class="trust">
+    <div><b>Hand-picked</b><span>Every product is chosen by a person, not an algorithm.</span></div>
+    <div><b>Checkout you trust</b><span>Gift guide items are bought directly from Amazon or the brand's own store.</span></div>
+    <div><b>Built by hand</b><span>Every Burly Box is put together one at a time, for one man.</span></div>
+  </section>
+</main>
+
+<footer class="planks">
+  <div class="wrap">
+    <a class="logo" href="#top">Burly Box<span> Co.</span></a>
+    <p>Burly Box Co. is reader-supported. When you buy through links on this site, we may earn a commission at no extra cost to you. As an Amazon Associate, we earn from qualifying purchases.</p>
+    <p>Gift guide prices and availability are set by each retailer and may change. Check the retailer's site for current pricing.</p>
+    <p>© <span id="yr">2026</span> Burly Box Co.</p>
+  </div>
+</footer>
+
+<script src="products.js"></script>
+<script>
+const TIERS={1:"Under $50",2:"$50–$100",3:"$100–$200",4:"$200+"};
+const WHO=[["dad","For Dad","D"],["partner","For Him","H"],["brother","For Brothers","B"],["friend","For Friends","F"],["athlete","The Athlete","A"],["outdoors","The Outdoorsman","O"]];
+const WHO_ALL=[...WHO,["coworker","Coworkers","C"]];
+const CAT_ORDER=["Gear","Grooming","Home & Kitchen","Fitness","Tech","Style"];
+const CATS=["All",...CAT_ORDER.filter(c=>PRODUCTS.some(p=>p.cat===c))];
+const TINTS=["rgba(0,0,0,0)","rgba(255,205,140,.55)","rgba(0,0,0,.4)","rgba(255,180,110,.4)","rgba(150,160,170,.6)","rgba(90,30,10,.5)"];
+const SALE=/sale|off|deal/i;
+
+/* ===== Burly Box sizes =====
+   price: box price in dollars (shipping is added at checkout)
+   ship:  flat shipping for this size, e.g. "12.95". Leave "" to just say "+ shipping".
+   checkout: paste the Shopify checkout link for this box. While it's "", the form
+             sends the request to your inbox instead of going to payment. */
+const BOXES=[
+  {name:"The Stocker",price:75,ship:"",checkout:"",items:["4 to 5 picks around one thing he loves","Handwritten card","Burly Box packaging"]},
+  {name:"The Foreman",price:135,ship:"",checkout:"",pop:true,items:["6 to 8 picks across two interests","One elevated piece he'd never buy himself","Handwritten card","Burly Box packaging"]},
+  {name:"The Full Haul",price:200,ship:"",checkout:"",items:["A full box built around his whole life","A statement piece, engraved or personalized","Handwritten card","Keepsake wooden crate"]},
+];
+const PAY_ON=BOXES.some(b=>b.checkout);
+
+let state={cat:"All",who:null,tier:null,q:"",sort:"pick",savedOnly:false,saved:new Set()};
+try{state.saved=new Set(JSON.parse(localStorage.getItem("bbc-saved")||"[]"))}catch(e){}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const initials=(brand,name)=>{const b=brand.split(/\s+/)[0],w=name.split(/\s+/).filter(x=>/^[A-Za-z]/.test(x)&&x.toLowerCase()!==b.toLowerCase());return (b[0]+(w[0]?w[0][0]:"")).toUpperCase()};
+const shopLabel=p=>p.store==="Amazon"?"Shop on Amazon":`Shop at ${p.store}`;
+const arrow=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>`;
+
+function tile(p,i){
+  if(p.img)return `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`;
+  return `<span class="tint" style="background:${TINTS[i%TINTS.length]}"></span><span class="mono">${esc(initials(p.brand,p.name))}</span>`;
+}
+function badgeClass(b){return /founder/i.test(b)?"badge founder":SALE.test(b)?"badge sale":"badge"}
+
+function render(){
+  let list=PRODUCTS.map((p,i)=>({...p,i}));
+  if(state.cat!=="All")list=list.filter(p=>p.cat===state.cat);
+  if(state.who)list=list.filter(p=>p.who.includes(state.who));
+  if(state.tier)list=list.filter(p=>p.tier===state.tier);
+  if(state.savedOnly)list=list.filter(p=>state.saved.has(p.name));
+  if(state.q){const q=state.q.toLowerCase();list=list.filter(p=>[p.name,p.brand,p.cat,p.why,p.store].join(" ").toLowerCase().includes(q))}
+  if(state.sort==="low")list.sort((a,b)=>a.tier-b.tier);
+  if(state.sort==="high")list.sort((a,b)=>b.tier-a.tier);
+  const whoLbl=state.who?WHO_ALL.find(w=>w[0]===state.who)[1]:null;
+  $("gridTitle").textContent=state.savedOnly?"Your saved gifts":[whoLbl,state.cat!=="All"?state.cat:null].filter(Boolean).join(" · ")||"All gifts";
+  $("count").textContent=list.length+(list.length===1?" gift":" gifts");
+  $("grid").innerHTML=list.length?list.map(p=>`
+    <article class="card">
+      <div class="thumb" style="background-position:${(p.i*37)%100}% ${(p.i*61)%100}%">${tile(p,p.i)}
+        ${p.badge?`<span class="${badgeClass(p.badge)}">${esc(p.badge)}</span>`:""}
+        <button class="heart" data-save="${esc(p.name)}" aria-pressed="${state.saved.has(p.name)}" aria-label="Save ${esc(p.name)}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        </button>
+      </div>
+      <div class="info">
+        <span class="brand">${esc(p.brand)}</span>
+        <span class="name">${esc(p.name)}</span>
+        <span class="why">${esc(p.why)}</span>
+        ${p.founder?`<span class="quote">“${esc(p.founder)}” <span style="font-style:normal;color:var(--muted)">Dominick</span></span>`:""}
+        <span class="price">${TIERS[p.tier]}</span>
+        ${p.note?`<span class="fine">${esc(p.note)}</span>`:""}
+        <a class="shop" href="${esc(p.url)}" target="_blank" rel="sponsored noopener">${esc(shopLabel(p))} ${arrow}</a>
+      </div>
+    </article>`).join(""):`<p class="empty">${state.savedOnly?"Tap the heart on any gift to save it here.":"No gifts match those filters yet. Try a different price or category."}</p>`;
+  $("savedN").textContent=state.saved.size;
+  $("savedBtn").setAttribute("aria-pressed",state.savedOnly);
+}
+
+$("cats").innerHTML=CATS.map(c=>`<button data-cat="${esc(c)}" aria-pressed="${c==='All'}">${c==="All"?"All Gifts":esc(c)}</button>`).join("")+`<a class="cat-link" href="#build">Build a Box</a>`;
+$("who").innerHTML=WHO.map(([k,l,i])=>`<button data-who="${k}" aria-pressed="false"><span class="ring">${i}</span>${l}</button>`).join("");
+$("prices").insertAdjacentHTML("afterbegin",Object.entries(TIERS).map(([k,v])=>`<button class="chip" data-tier="${k}" aria-pressed="false">${v}</button>`).join(""));
+
+document.addEventListener("click",e=>{
+  const c=e.target.closest("[data-cat]"),w=e.target.closest("[data-who]"),t=e.target.closest("[data-tier]"),h=e.target.closest("[data-save]");
+  if(c){state.cat=c.dataset.cat;state.savedOnly=false;document.querySelectorAll("[data-cat]").forEach(b=>b.setAttribute("aria-pressed",b===c));$("shop").scrollIntoView()}
+  else if(w){state.who=state.who===w.dataset.who?null:w.dataset.who;state.savedOnly=false;document.querySelectorAll("[data-who]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.who===state.who));$("shop").scrollIntoView()}
+  else if(t){const v=+t.dataset.tier;state.tier=state.tier===v?null:v;document.querySelectorAll("[data-tier]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.tier===state.tier))}
+  else if(h){const n=h.dataset.save;state.saved.has(n)?state.saved.delete(n):state.saved.add(n);try{localStorage.setItem("bbc-saved",JSON.stringify([...state.saved]))}catch(e){}}
+  else if(e.target.closest("#savedBtn")){state.savedOnly=!state.savedOnly;$("shop").scrollIntoView()}
+  else return;
+  render();
+});
+$("q").addEventListener("input",e=>{state.q=e.target.value.trim();render()});
+$("sort").addEventListener("change",e=>{state.sort=e.target.value;render()});
+
+/* ===== Hero slides ===== */
+(function(){
+  const now=new Date(),xmas=new Date(now.getFullYear(),11,25);
+  if(now>xmas)xmas.setFullYear(now.getFullYear()+1);
+  const days=Math.max(0,Math.ceil((xmas-now)/864e5));
+  $("countdown").innerHTML=`<div><b>${days}</b><small>days until Christmas</small></div><div><b>${PRODUCTS.length}</b><small>hand-picked gifts</small></div><div><b>${PRODUCTS.filter(p=>p.tier===1).length}</b><small>gifts under $50</small></div><div><b>${CATS.length-1}</b><small>categories to browse</small></div>`;
+  const i=Math.max(0,PRODUCTS.findIndex(p=>p.name===FEATURED)),f=PRODUCTS[i];
+  $("fEyebrow").textContent=f.badge&&SALE.test(f.badge)?"On sale now":"Trending now";
+  $("fName").textContent=f.name.toLowerCase().startsWith(f.brand.toLowerCase())?f.name:`${f.brand} ${f.name}`;
+  $("fWhy").textContent=f.why;
+  $("fPrice").textContent=TIERS[f.tier];
+  $("fLink").href=f.url;$("fLink").innerHTML=`${esc(shopLabel(f))} ${arrow}`;
+  $("fTile").innerHTML=f.img?`<img src="${esc(f.img)}" alt="${esc(f.name)}">`:`<span class="mono">${esc(initials(f.brand,f.name))}</span>`;
+  $("fTile").style.backgroundPosition=`${(i*37)%100}% ${(i*61)%100}%`;
+
+  const hero=$("hero"),slides=[...hero.querySelectorAll(".slide")];
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cur=0,timer=null,paused=reduce;
+  $("dots").innerHTML=slides.map((_,k)=>`<button type="button" aria-label="Show slide ${k+1}"></button>`).join("");
+  const dots=[...$("dots").children];
+  function show(n){
+    cur=(n+slides.length)%slides.length;
+    slides.forEach((s,k)=>{const on=k===cur;s.classList.toggle("is-active",on);s.setAttribute("aria-hidden",String(!on));s.inert=!on});
+    dots.forEach((d,k)=>d.setAttribute("aria-current",String(k===cur)));
+  }
+  function stop(){clearInterval(timer);timer=null}
+  function start(){stop();if(!paused)timer=setInterval(()=>show(cur+1),6500)}
+  function setPaused(v){paused=v;$("pause").textContent=v?"▶":"❚❚";$("pause").setAttribute("aria-label",v?"Play slideshow":"Pause slideshow");v?stop():start()}
+  dots.forEach((d,k)=>d.addEventListener("click",()=>{show(k);start()}));
+  $("prev").addEventListener("click",()=>{show(cur-1);start()});
+  $("next").addEventListener("click",()=>{show(cur+1);start()});
+  $("pause").addEventListener("click",()=>setPaused(!paused));
+  hero.addEventListener("mouseenter",stop);hero.addEventListener("mouseleave",start);
+  hero.addEventListener("focusin",stop);hero.addEventListener("focusout",start);
+  setPaused(paused);show(0);
+})();
+
+/* ===== Boxes ===== */
+$("tiers").innerHTML=BOXES.map(b=>`
+  <article class="tier${b.pop?" pop":""}">
+    <div class="crate">${b.pop?`<span class="tagline">Our favorite</span>`:""}<b>${esc(b.name)}</b></div>
+    <div class="tier-body">
+      <span class="from"><strong>$${b.price}</strong> + ${b.ship?"$"+esc(b.ship)+" flat ":""}shipping</span>
+      <ul>${b.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
+      <button type="button" data-box="${esc(b.name)}">Choose ${esc(b.name)}</button>
+    </div>
+  </article>`).join("");
+$("o-box").innerHTML=BOXES.map(b=>`<option value="${esc(b.name)}"${b.pop?" selected":""}>${esc(b.name)}, $${b.price}</option>`).join("");
+if(PAY_ON){$("orderSub").textContent="Answer a few questions, then check out securely through Shopify. The more specific you are, the better the box.";$("submitBtn").textContent="Continue to payment";}
+else{$("shipNote").textContent="We'll email you to confirm the details. Shipping is added when you pay.";}
+document.querySelectorAll("[data-box]").forEach(btn=>btn.addEventListener("click",()=>{
+  $("o-box").value=btn.dataset.box;$("order").scrollIntoView({block:"start"});setTimeout(()=>$("o-him").focus({preventScroll:true}),400);
+}));
+const today=new Date();$("o-date").min=new Date(today.getTime()-today.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+$("yr").textContent=today.getFullYear();
+
+/* ===== Box request form (Netlify Forms) ===== */
+$("order").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const form=e.target,done=$("orderDone");
+  if(!form.checkValidity()){form.reportValidity();return}
+  if(window.BB_PREVIEW){done.className="done";done.innerHTML="<b>Preview only.</b> On the live site, the answers go to your inbox, then the customer goes to Shopify checkout for that box.";done.hidden=false;return}
+  $("submitBtn").disabled=true;
+  try{
+    const r=await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams(new FormData(form)).toString()});
+    if(!r.ok)throw new Error(r.status);
+    const box=BOXES.find(b=>b.name===form.box.value);
+    if(box&&box.checkout){
+      done.className="done";done.innerHTML="<b>Got it.</b> Taking you to checkout…";done.hidden=false;
+      location.href=box.checkout+(box.checkout.includes("?")?"&":"?")+"checkout[email]="+encodeURIComponent(form.email.value);
+      return;
+    }
+    done.className="done";done.innerHTML=`<b>Request received.</b> Thanks, ${esc(form["your-name"].value.split(" ")[0])}. We'll email you at ${esc(form.email.value)} to confirm the details and send a payment link.`;
+    form.reset();
+  }catch(err){
+    done.className="done err";done.innerHTML="<b>That didn't go through.</b> Check your connection and try again in a minute.";
+  }finally{done.hidden=false;$("submitBtn").disabled=false}
+});
+
+render();
+</script>
+</body>
+</html>

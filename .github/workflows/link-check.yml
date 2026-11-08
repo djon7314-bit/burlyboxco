@@ -1,0 +1,41 @@
+# Weekly product link check for Burly Box Co.
+# Runs every Monday morning (and any time you click "Run workflow" on the Actions tab).
+# If any product link in products.js is dead, it opens an Issue in this repo listing them.
+name: Weekly link check
+
+on:
+  schedule:
+    - cron: "17 12 * * 1"   # Mondays, about 7–8am Eastern
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check product links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # 403/429/503 are accepted because Amazon and ShopMy often block automated
+          # checkers even when the link works. Real dead links (404, 410, timeouts) still fail.
+          args: >-
+            --no-progress
+            --max-redirects 10
+            --timeout 30
+            --accept '200..=299,403,429,503'
+            products.js
+          fail: false
+
+      - name: Open an issue if links are broken
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Broken product links found"
+          content-filepath: ./lychee/out.md
+          labels: broken-links
