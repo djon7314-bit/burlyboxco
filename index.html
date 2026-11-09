@@ -420,9 +420,9 @@ const SALE=/sale|off|deal/i;
    checkout: paste the Shopify checkout link for this box. While it's "", the form
              sends the request to your inbox instead of going to payment. */
 const BOXES=[
-  {name:"The Stocker",price:75,ship:"",checkout:"",items:["4 to 5 picks around one thing he loves","Handwritten card","Burly Box packaging"]},
-  {name:"The Foreman",price:135,ship:"",checkout:"",pop:true,items:["6 to 8 picks across two interests","One elevated piece he'd never buy himself","Handwritten card","Burly Box packaging"]},
-  {name:"The Full Haul",price:200,ship:"",checkout:"",items:["A full box built around his whole life","A statement piece, engraved or personalized","Handwritten card","Keepsake wooden crate"]},
+  {name:"The Stocker",price:75,ship:"",checkout:"https://buy.stripe.com/3cI9ASapk0j33QJbOwdnW02",items:["4 to 5 picks around one thing he loves","Handwritten card","Burly Box packaging"]},
+  {name:"The Foreman",price:135,ship:"",checkout:"https://buy.stripe.com/14A7sKapk0j3evn5q8dnW03",pop:true,items:["6 to 8 picks across two interests","One elevated piece he'd never buy himself","Handwritten card","Burly Box packaging"]},
+  {name:"The Full Haul",price:200,ship:"",checkout:"https://buy.stripe.com/28E28q2WS9TDfzr3i0dnW04",items:["A full box built around his whole life","A statement piece, engraved or personalized","Handwritten card","Keepsake wooden crate"]},
 ];
 const PAY_ON=BOXES.some(b=>b.checkout);
 
@@ -551,7 +551,7 @@ $("tiers").innerHTML=BOXES.map(b=>`
     </div>
   </article>`).join("");
 $("o-box").innerHTML=BOXES.map(b=>`<option value="${esc(b.name)}"${b.pop?" selected":""}>${esc(b.name)}, $${b.price}</option>`).join("");
-if(PAY_ON){$("orderSub").textContent="Answer a few questions, then check out securely through Shopify. The more specific you are, the better the box.";$("submitBtn").textContent="Continue to payment";}
+if(PAY_ON){$("orderSub").textContent="Answer a few questions, then check out securely with Stripe. The more specific you are, the better the box.";$("submitBtn").textContent="Continue to payment";}
 else{$("shipNote").textContent="We'll email you to confirm the details. Shipping is added when you pay.";}
 document.querySelectorAll("[data-box]").forEach(btn=>btn.addEventListener("click",()=>{
   $("o-box").value=btn.dataset.box;$("order").scrollIntoView({block:"start"});setTimeout(()=>$("o-him").focus({preventScroll:true}),400);
@@ -572,7 +572,8 @@ $("order").addEventListener("submit",async e=>{
     const box=BOXES.find(b=>b.name===form.box.value);
     if(box&&box.checkout){
       done.className="done";done.innerHTML="<b>Got it.</b> Taking you to checkout…";done.hidden=false;
-      location.href=box.checkout+(box.checkout.includes("?")?"&":"?")+"checkout[email]="+encodeURIComponent(form.email.value);
+      const emailKey=box.checkout.includes("stripe.com")?"prefilled_email":"checkout[email]";
+      location.href=box.checkout+(box.checkout.includes("?")?"&":"?")+emailKey+"="+encodeURIComponent(form.email.value);
       return;
     }
     done.className="done";done.innerHTML=`<b>Request received.</b> Thanks, ${esc(form["your-name"].value.split(" ")[0])}. We'll email you at ${esc(form.email.value)} to confirm the details and send a payment link.`;
