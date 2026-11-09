@@ -48,7 +48,7 @@ const PRODUCTS = [
    why:"Records, CDs, tapes and FM radio in one mahogany cabinet. Streams from his phone too.",
    url:"https://link.amazon/B0gYvPyC7", backup:""},
 
-  {name:"Induction Speaker Phone Stand", brand:"Desk gadget", store:"Amazon", cat:"Tech", who:["partner","brother","friend","coworker"], tier:1,
+  {name:"Induction Speaker 5-in-1 Phone Stand", brand:"Oresoc", store:"Amazon", cat:"Tech", who:["partner","brother","friend","coworker"], tier:1,
    why:"Set his phone on it and the music gets louder. No pairing needed, plus light-up glow and a cable to charge while it plays.",
    note:"Black or green.",
    url:"https://link.amazon/B005yPuXF", backup:""},
