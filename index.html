@@ -361,7 +361,7 @@ footer .logo{font-size:22px}
         <div class="field"><label for="o-email">Your email</label><input id="o-email" name="email" type="email" autocomplete="email" required></div>
       </div>
       <button class="submit" id="submitBtn" type="submit">Send my box request</button>
-      <p class="fine" id="shipNote" style="margin:-8px 0 0">Shipping is added at checkout.</p>
+      <p class="fine" id="shipNote" style="margin:-8px 0 0">Flat-rate shipping and any sales tax are added at checkout.</p>
       <div class="done" id="orderDone" role="status" hidden></div>
     </form>
   </section>
@@ -420,9 +420,9 @@ const SALE=/sale|off|deal/i;
    checkout: paste the Shopify checkout link for this box. While it's "", the form
              sends the request to your inbox instead of going to payment. */
 const BOXES=[
-  {name:"The Stocker",price:75,ship:"",checkout:"https://buy.stripe.com/3cI9ASapk0j33QJbOwdnW02",items:["4 to 5 picks around one thing he loves","Handwritten card","Burly Box packaging"]},
-  {name:"The Foreman",price:135,ship:"",checkout:"https://buy.stripe.com/14A7sKapk0j3evn5q8dnW03",pop:true,items:["6 to 8 picks across two interests","One elevated piece he'd never buy himself","Handwritten card","Burly Box packaging"]},
-  {name:"The Full Haul",price:200,ship:"",checkout:"https://buy.stripe.com/28E28q2WS9TDfzr3i0dnW04",items:["A full box built around his whole life","A statement piece, engraved or personalized","Handwritten card","Keepsake wooden crate"]},
+  {name:"The Stocker",price:75,ship:"9.95",checkout:"https://buy.stripe.com/3cI9ASapk0j33QJbOwdnW02",items:["4 to 5 picks around one thing he loves","Handwritten card","Burly Box packaging"]},
+  {name:"The Foreman",price:135,ship:"12.95",checkout:"https://buy.stripe.com/14A7sKapk0j3evn5q8dnW03",pop:true,items:["6 to 8 picks across two interests","One elevated piece he'd never buy himself","Handwritten card","Burly Box packaging"]},
+  {name:"The Full Haul",price:200,ship:"16.95",checkout:"https://buy.stripe.com/28E28q2WS9TDfzr3i0dnW04",items:["A full box built around his whole life","A statement piece, engraved or personalized","Handwritten card","Keepsake wooden crate"]},
 ];
 const PAY_ON=BOXES.some(b=>b.checkout);
 
