@@ -39,9 +39,8 @@ const HOME_PICKS = [
 const FEATURED = "Victrola Quincy 6-in-1 Record Player";
 
 const PRODUCTS = [
-  {name:"Thirteen-Week Training & Nutrition Journal", brand:"Aeilus", store:"Amazon", cat:"Fitness", who:["athlete","partner","brother","friend"], tier:1, badge:"Made by our founder",
+  {name:"Thirteen-Week Training & Nutrition Journal", brand:"Aeilus", store:"Amazon", cat:"Fitness", who:["athlete","partner","brother","friend"], tier:1,
    why:"Thirteen weeks of workouts and meals, tracked on paper. A fresh start he can hold in his hands.",
-   note:"Written by Burly Box founder Dominick.",
    url:"https://link.amazon/B07vV6A9b", backup:""},
 
   {name:"Victrola Quincy 6-in-1 Record Player", brand:"Victrola", store:"Amazon", cat:"Tech", who:["dad","partner"], tier:3, badge:"Sale",
